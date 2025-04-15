@@ -49,8 +49,8 @@ local function save_profiles(threshold)
 end
 
 time([[Luarocks path setup]], true)
-local package_path_str = "/home/james/.cache/nvim/packer_hererocks/2.1.1727870382/share/lua/5.1/?.lua;/home/james/.cache/nvim/packer_hererocks/2.1.1727870382/share/lua/5.1/?/init.lua;/home/james/.cache/nvim/packer_hererocks/2.1.1727870382/lib/luarocks/rocks-5.1/?.lua;/home/james/.cache/nvim/packer_hererocks/2.1.1727870382/lib/luarocks/rocks-5.1/?/init.lua"
-local install_cpath_pattern = "/home/james/.cache/nvim/packer_hererocks/2.1.1727870382/lib/lua/5.1/?.so"
+local package_path_str = "/home/james/.cache/nvim/packer_hererocks/2.1.1731601260/share/lua/5.1/?.lua;/home/james/.cache/nvim/packer_hererocks/2.1.1731601260/share/lua/5.1/?/init.lua;/home/james/.cache/nvim/packer_hererocks/2.1.1731601260/lib/luarocks/rocks-5.1/?.lua;/home/james/.cache/nvim/packer_hererocks/2.1.1731601260/lib/luarocks/rocks-5.1/?/init.lua"
+local install_cpath_pattern = "/home/james/.cache/nvim/packer_hererocks/2.1.1731601260/lib/lua/5.1/?.so"
 if not string.find(package.path, package_path_str, 1, true) then
   package.path = package.path .. ';' .. package_path_str
 end
@@ -126,7 +126,7 @@ _G.packer_plugins = {
     url = "https://github.com/ellisonleao/gruvbox.nvim"
   },
   ["image.nvim"] = {
-    config = { "\27LJ\2\n©\5\0\0\6\0\18\0\0236\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\a\0005\4\4\0005\5\5\0=\5\6\4=\4\b\0035\4\t\0=\4\n\3=\3\v\0026\3\f\0009\3\r\3=\3\14\0026\3\f\0009\3\r\3=\3\15\0025\3\16\0=\3\17\2B\0\2\1K\0\1\0#window_overlap_clear_ft_ignore\1\4\0\0\rcmp_menu\rcmp_docs\5 max_width_window_percentage!max_height_window_percentage\thuge\tmath\17integrations\nneorg\1\0\4\27download_remote_images\2\25clear_in_insert_mode\1\fenabled\2 only_render_image_at_cursor\1\rmarkdown\1\0\2\nneorg\0\rmarkdown\0\14filetypes\1\3\0\0\rmarkdown\fvimwiki\1\0\5\14filetypes\0 only_render_image_at_cursor\1\27download_remote_images\2\25clear_in_insert_mode\1\fenabled\2\1\0\b\17integrations\0#window_overlap_clear_ft_ignore\0\fbackend\nkitty!window_overlap_clear_enabled\2 max_width_window_percentage\0!max_height_window_percentage\0\15max_height\3\f\14max_width\3d\nsetup\nimage\frequire\0" },
+    config = { "\27LJ\2\n©\5\0\0\6\0\18\0\0236\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\a\0005\4\4\0005\5\5\0=\5\6\4=\4\b\0035\4\t\0=\4\n\3=\3\v\0026\3\f\0009\3\r\3=\3\14\0026\3\f\0009\3\r\3=\3\15\0025\3\16\0=\3\17\2B\0\2\1K\0\1\0#window_overlap_clear_ft_ignore\1\4\0\0\rcmp_menu\rcmp_docs\5 max_width_window_percentage!max_height_window_percentage\thuge\tmath\17integrations\nneorg\1\0\4 only_render_image_at_cursor\1\27download_remote_images\2\25clear_in_insert_mode\1\fenabled\2\rmarkdown\1\0\2\rmarkdown\0\nneorg\0\14filetypes\1\3\0\0\rmarkdown\fvimwiki\1\0\5\14filetypes\0 only_render_image_at_cursor\1\27download_remote_images\2\25clear_in_insert_mode\1\fenabled\2\1\0\b\14max_width\3d\17integrations\0#window_overlap_clear_ft_ignore\0\fbackend\nkitty!window_overlap_clear_enabled\2 max_width_window_percentage\0!max_height_window_percentage\0\15max_height\3\f\nsetup\nimage\frequire\0" },
     loaded = true,
     path = "/home/james/.local/share/nvim/site/pack/packer/start/image.nvim",
     url = "https://github.com/3rd/image.nvim"
@@ -187,6 +187,11 @@ _G.packer_plugins = {
     path = "/home/james/.local/share/nvim/site/pack/packer/start/popup.nvim",
     url = "https://github.com/nvim-lua/popup.nvim"
   },
+  ["sqls.nvim"] = {
+    loaded = true,
+    path = "/home/james/.local/share/nvim/site/pack/packer/start/sqls.nvim",
+    url = "https://github.com/nanotee/sqls.nvim"
+  },
   ["telescope.nvim"] = {
     loaded = true,
     path = "/home/james/.local/share/nvim/site/pack/packer/start/telescope.nvim",
@@ -205,6 +210,10 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
+-- Config for: image.nvim
+time([[Config for image.nvim]], true)
+try_loadstring("\27LJ\2\n©\5\0\0\6\0\18\0\0236\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\a\0005\4\4\0005\5\5\0=\5\6\4=\4\b\0035\4\t\0=\4\n\3=\3\v\0026\3\f\0009\3\r\3=\3\14\0026\3\f\0009\3\r\3=\3\15\0025\3\16\0=\3\17\2B\0\2\1K\0\1\0#window_overlap_clear_ft_ignore\1\4\0\0\rcmp_menu\rcmp_docs\5 max_width_window_percentage!max_height_window_percentage\thuge\tmath\17integrations\nneorg\1\0\4 only_render_image_at_cursor\1\27download_remote_images\2\25clear_in_insert_mode\1\fenabled\2\rmarkdown\1\0\2\rmarkdown\0\nneorg\0\14filetypes\1\3\0\0\rmarkdown\fvimwiki\1\0\5\14filetypes\0 only_render_image_at_cursor\1\27download_remote_images\2\25clear_in_insert_mode\1\fenabled\2\1\0\b\14max_width\3d\17integrations\0#window_overlap_clear_ft_ignore\0\fbackend\nkitty!window_overlap_clear_enabled\2 max_width_window_percentage\0!max_height_window_percentage\0\15max_height\3\f\nsetup\nimage\frequire\0", "config", "image.nvim")
+time([[Config for image.nvim]], false)
 -- Config for: Comment.nvim
 time([[Config for Comment.nvim]], true)
 try_loadstring("\27LJ\2\n5\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\fComment\frequire\0", "config", "Comment.nvim")
@@ -213,10 +222,6 @@ time([[Config for Comment.nvim]], false)
 time([[Config for molten-nvim]], true)
 try_loadstring("\27LJ\2\n9\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\16user.molten\frequire\0", "config", "molten-nvim")
 time([[Config for molten-nvim]], false)
--- Config for: image.nvim
-time([[Config for image.nvim]], true)
-try_loadstring("\27LJ\2\n©\5\0\0\6\0\18\0\0236\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\a\0005\4\4\0005\5\5\0=\5\6\4=\4\b\0035\4\t\0=\4\n\3=\3\v\0026\3\f\0009\3\r\3=\3\14\0026\3\f\0009\3\r\3=\3\15\0025\3\16\0=\3\17\2B\0\2\1K\0\1\0#window_overlap_clear_ft_ignore\1\4\0\0\rcmp_menu\rcmp_docs\5 max_width_window_percentage!max_height_window_percentage\thuge\tmath\17integrations\nneorg\1\0\4\27download_remote_images\2\25clear_in_insert_mode\1\fenabled\2 only_render_image_at_cursor\1\rmarkdown\1\0\2\nneorg\0\rmarkdown\0\14filetypes\1\3\0\0\rmarkdown\fvimwiki\1\0\5\14filetypes\0 only_render_image_at_cursor\1\27download_remote_images\2\25clear_in_insert_mode\1\fenabled\2\1\0\b\17integrations\0#window_overlap_clear_ft_ignore\0\fbackend\nkitty!window_overlap_clear_enabled\2 max_width_window_percentage\0!max_height_window_percentage\0\15max_height\3\f\14max_width\3d\nsetup\nimage\frequire\0", "config", "image.nvim")
-time([[Config for image.nvim]], false)
 
 _G._packer.inside_compile = false
 if _G._packer.needs_bufread == true then

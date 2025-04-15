@@ -40,6 +40,27 @@ packer.init {
 -- Install your plugins here
 return packer.startup(function(use)
 
+  -- LSP signature - shows function signatures as you type
+  use "ray-x/lsp_signature.nvim"
+
+  -- Alternative to nvim-lsp-inlayhints - Official neovim inlay hints
+  use "simrat39/inlay-hints.nvim"
+
+  -- Lspsaga for comprehensive UI enhancements
+  use {
+    "glepnir/lspsaga.nvim",
+    branch = "main",
+    requires = {
+      {"nvim-tree/nvim-web-devicons"},
+      {"nvim-treesitter/nvim-treesitter"}
+    }
+  }
+
+  -- formatter.nvim for code formatting
+  use "mhartington/formatter.nvim"
+
+  -- WhoIsSethDaniel/mason-tool-installer.nvim for auto-installing tools
+  use "WhoIsSethDaniel/mason-tool-installer.nvim"
   -- My plugins here
   use "wbthomason/packer.nvim" -- Have packer manage itself
   use "nvim-lua/popup.nvim" -- An implementation of the Popup API from vim in Neovim
@@ -60,6 +81,9 @@ return packer.startup(function(use)
   use "williamboman/mason-lspconfig.nvim"   -- Simple to use laguage server installer
   use "neovim/nvim-lspconfig"   -- enable LSP
   use 'jose-elias-alvarez/null-ls.nvim' -- LSP diagnostics and code actions
+
+  -- sql thing 
+  use 'nanotee/sqls.nvim'
 
   -- Treesitter
   use {

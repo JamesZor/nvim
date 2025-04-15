@@ -39,7 +39,6 @@ vim.cmd[[highlight ColorColumn ctermbg=lightgrey guibg=lightgrey]]  -- Set the c
 vim.cmd "set whichwrap+=<,>,[,],h,l"
 vim.cmd [[set iskeyword+=-]]
 
-
 vim.opt.clipboard = "unnamedplus"
 
 --vim.g.python3_host_prog = '/home/james/.conda/envs/ml_tf/bin/python'
@@ -47,12 +46,3 @@ vim.g.python3_host_prog = '/home/james/.conda/envs/gt/bin/python'
 --vim.g.python3_host_prog = vim.fn.expand('')
 
 --
---vim.api.nvim_create_user_command('PyrightInfo', function()
---  local clients = vim.lsp.get_active_clients({name = 'pyright'})
---  if #clients > 0 then
---    local config = clients[1].config
---    print("Pyright is using Python at: " .. (config.settings.python.pythonPath or "Unknown"))
---  else
---    print("Pyright is not attached to this buffer")
---  end
---end, {})

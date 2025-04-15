@@ -9,7 +9,9 @@ require "user.treesitter"
 require "user.vimtex"
 require "user.toggleterm"
 require "user.comment"
-require("user.molten")
+require "user.molten"
+require "user.inlay_hints"
+
 
 --require "user.conda"
 --

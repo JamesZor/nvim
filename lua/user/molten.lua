@@ -6,9 +6,13 @@ local function setup_options()
     -- Basic options
     vim.g.molten_image_provider = "image.nvim"
     vim.g.molten_output_win_max_height = 40
+    vim.g.molten_output_win_max_width = 200  -- Add this line to control width
     vim.g.molten_virt_text_output = true
     vim.g.molten_wrap_output = true
-
+    vim.g.molten_enable_image_popup = true
+    vim.g.molten_output_virt_lines_off_by_1 = false
+    vim.g.molten_enable_virt_lines_in_output_window = false
+    vim.g.molten_image_location = "both"
     -- Fix the border issue
 --    vim.g.molten_output_win_border = {
 --        "╭", "─", "╮",
@@ -28,10 +32,26 @@ local function setup_options()
     vim.g.molten_output_crop_border = true
     vim.g.molten_output_win_hide_on_leave = false
     vim.g.molten_output_virt_lines = true
+    -- Set the open command explicitly for Linux
+    vim.g.molten_open_cmd = vim.fn.exepath("feh")
+--    vim.g.molten_open_cmd = "xdg-open"
+
+-- Set the specific kernel paths
+  vim.g.molten_jupyter_kernels = {
+      ["py3.11"] = {
+          kernel_path = "/home/james/.local/share/jupyter/kernels/py3.11/kernel.json"
+      },
+      ["julia-1.11"] = {
+          kernel_path = "/home/james/.local/share/jupyter/kernels/julia-1.11/kernel.json"
+      },
+      ["julia-8-threads"] = {
+          kernel_path = "/home/james/.local/share/jupyter/kernels/julia-_8-threads_-1.11/kernel.json"
+      }
+  }
 
 
     -- Set Python host
-    vim.g.python3_host_prog = vim.fn.expand('/home/james/.conda/envs/ml_tf/bin/python')
+    vim.g.python3_host_prog = vim.fn.expand('/home/james/miniconda3/envs/py3.11/bin/python')
 end
 
 local function setup_keymaps()
@@ -39,6 +59,8 @@ local function setup_keymaps()
     
     -- Essential mappings
     map("n", "<localleader>mi", ":MoltenInit<CR>", { silent = true, desc = "Initialize Molten" })
+    map("n", "<localleader>mr", ":MoltenRestart<CR>", { silent = true, desc = "Restart molten Molten" })
+
 --    map("n", "<localleader>e", ":MoltenEvaluateOperator<CR>", { silent = true, desc = "Run operator selection" })
     map("n", "<localleader>rl", ":MoltenEvaluateLine<CR>", { silent = true, desc = "Evaluate line" })
     map("n", "<localleader>rr", ":MoltenReevaluateCell<CR>", { silent = true, desc = "Re-evaluate cell" })
@@ -46,6 +68,8 @@ local function setup_keymaps()
   -- Add these to your setup_keymaps() function
     map("n", "<localleader>os", ":noautocmd MoltenEnterOutput<CR>", { silent = true, desc = "Enter output window" })
     map("n", "<localleader>oh", ":MoltenHideOutput<CR>", { silent = true, desc = "Hide output" })
+
+    map("n", "<localleader>ip", ":MoltenImagePopup<CR>", { silent = true, desc = "Open image in popup" })
 
     vim.api.nvim_create_autocmd("FileType", {
         pattern = "molten_output",

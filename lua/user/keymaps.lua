@@ -108,8 +108,8 @@ keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", term_opts)
 keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
 keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
 
--- keymap("n", "<leader>f", "<cmd>Telescope find_files<cr>", opts)
-keymap("n", "<leader>f", "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = True }))<cr>", opts)
+ keymap("n", "<leader>f", "<cmd>Telescope find_files<cr>", opts)
+--keymap("n", "<leader>f", "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = True }))<cr>", opts)
 keymap("n", "<c-t>", "<cmd>Telescope live_grep<cr>", opts)
 
 
@@ -124,6 +124,109 @@ keymap("n", "<c-x>", "", {
   end,
   noremap = true,
   silent = true
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "python",
+  callback = function()
+    -- LSP features
+    vim.keymap.set("n", "<leader>pd", vim.lsp.buf.definition, {buffer=0, desc="Go to definition"})
+    vim.keymap.set("n", "<leader>pi", vim.lsp.buf.implementation, {buffer=0, desc="Go to implementation"})
+    vim.keymap.set("n", "<leader>pr", vim.lsp.buf.references, {buffer=0, desc="Find references"})
+    vim.keymap.set("n", "<leader>pn", vim.lsp.buf.rename, {buffer=0, desc="Rename symbol"})
+    vim.keymap.set("n", "<leader>pa", vim.lsp.buf.code_action, {buffer=0, desc="Code action"})
+    
+    -- Formatting
+    vim.keymap.set("n", "<leader>pf", "<cmd>FormatWrite<CR>", {buffer=0, desc="Format file"})
+    
+    -- Testing (if you add a test framework plugin)
+    vim.keymap.set("n", "<leader>pt", "<cmd>TestNearest<CR>", {buffer=0, desc="Test nearest"})
+    vim.keymap.set("n", "<leader>pT", "<cmd>TestFile<CR>", {buffer=0, desc="Test file"})
+  end
+})
+
+
+-- for bet project 
+local function install_betting_package()
+    -- Define the project directory where setup.py is located
+    local project_path = '/home/james/projects/Betting'
+    
+    -- Use your conda environment's Python to run pip install
+    local python_path = '/home/james/miniconda3/envs/py3.11/bin/python'
+    
+    -- Create the full command: python -m pip install -e .
+    local pip_install = vim.fn.jobstart(python_path .. ' -m pip install -e .', {
+        -- Set the working directory to your project path
+        cwd = project_path,
+        
+        -- Handle standard output - show what pip is doing
+        on_stdout = function(_, data)
+            if data then
+                vim.schedule(function()
+                    for _, line in ipairs(data) do
+                        if line ~= "" then
+                            print(line)
+                        end
+                    end
+                end)
+            end
+        end,
+        
+        -- Handle any errors that might occur
+        on_stderr = function(_, data)
+            if data then
+                vim.schedule(function()
+                    for _, line in ipairs(data) do
+                        if line ~= "" then
+                            print("Error: " .. line)
+                        end
+                    end
+                end)
+            end
+        end,
+        
+        -- Show a completion message when done
+        on_exit = function(_, code)
+            if code == 0 then
+                vim.notify("Package installed successfully!", vim.log.levels.INFO)
+            else
+                vim.notify("Failed to install package", vim.log.levels.ERROR)
+            end
+        end
+    })
+end
+
+-- Add a keybinding to trigger the installation
+keymap("n", "<leader>pi", "", {
+    callback = install_betting_package,
+    noremap = true,
+    silent = true,
+    desc = "Install Betting Package"
+})
+
+-- First, let's create a function that chains all these actions together
+local function install_and_restart()
+    -- First action: Install betting package
+    install_betting_package()  -- Assuming this function exists
+    
+    -- Second action: Restart Molten
+    vim.cmd('MoltenRestart')
+    
+    -- Third action: Restart LSP
+    -- We add a small delay to ensure the package installation completes
+    vim.defer_fn(function()
+        vim.cmd('LspRestart')
+    end, 1000)  -- 1000ms delay
+    
+    -- Optional: Add feedback to show the sequence is running
+    vim.notify('Restarting environment...', vim.log.levels.INFO)
+end
+
+-- Now let's create the keybinding
+vim.keymap.set('n', '<leader>pr', install_and_restart, {
+    noremap = true,
+    silent = true,
+    desc = "Install Package and Restart Environment"
 })
 
 
