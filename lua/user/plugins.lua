@@ -44,7 +44,7 @@ return packer.startup(function(use)
   use "ray-x/lsp_signature.nvim"
 
   -- Alternative to nvim-lsp-inlayhints - Official neovim inlay hints
-  use "simrat39/inlay-hints.nvim"
+  use 'felpafel/inlay-hint.nvim'
 
   -- Lspsaga for comprehensive UI enhancements
   use {
@@ -65,6 +65,17 @@ return packer.startup(function(use)
   use "wbthomason/packer.nvim" -- Have packer manage itself
   use "nvim-lua/popup.nvim" -- An implementation of the Popup API from vim in Neovim
   use "nvim-lua/plenary.nvim" -- Useful lua functions used ny lots of plugins
+
+
+  -- Dadbod for database management
+  use "tpope/vim-dadbod" -- Core database interface
+  use "kristijanhusak/vim-dadbod-ui" -- UI for vim-dadbod
+  use "kristijanhusak/vim-dadbod-completion" -- Completion for vim-dadbod
+
+  -- TreeSitter DBML Grammar
+  use "dynamotn/tree-sitter-dbml"
+  -- DBML syntax highlighting and support
+  use "jidn/vim-dbml"
 
 
   -- CMP plugins
@@ -108,7 +119,7 @@ return packer.startup(function(use)
   use 'lervag/vimtex'
 
   -- Snippets
-  use "L3MON4D3/LuaSnip" -- Snippet engine
+  use {"L3MON4D3/LuaSnip", run = "make install_jsregexp"}-- Snippet engine
   use "rafamadriz/friendly-snippets" -- a bunch of snippets to use
 
   -- Telescope
@@ -126,7 +137,8 @@ return packer.startup(function(use)
     "3rd/image.nvim",
     config = function()
       require('image').setup({
-        backend = "kitty",
+        backend = "kitty",  -- Keep this if you're using kitty terminal
+        
         integrations = {
           markdown = {
             enabled = true,
@@ -141,17 +153,59 @@ return packer.startup(function(use)
             download_remote_images = true,
             only_render_image_at_cursor = false,
           },
+          -- Removed the molten integration that was causing errors
         },
-        max_width = 100,
-        max_height = 12,
+        
+        -- Increase max dimensions for better visualization of plots and graphs
+        max_width = 150,      -- Increased from 100
+        max_height = 20,      -- Increased from 12
+        
         max_height_window_percentage = math.huge,
         max_width_window_percentage = math.huge,
         window_overlap_clear_enabled = true,
         window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
+        
+        -- Add rendering options section for better image quality
+        render = {
+          min_padding = 5,
+          show_label = true,
+          use_dither = true,
+          foreground_color = false,
+          background_color = false
+        },
       })
     end,
   }
- 
+--  use {
+--    "3rd/image.nvim",
+--    config = function()
+--      require('image').setup({
+--        backend = "kitty",
+--        integrations = {
+--          markdown = {
+--            enabled = true,
+--            clear_in_insert_mode = false,
+--            download_remote_images = true,
+--            only_render_image_at_cursor = false,
+--            filetypes = { "markdown", "vimwiki" },
+--          },
+--          neorg = {
+--            enabled = true,
+--            clear_in_insert_mode = false,
+--            download_remote_images = true,
+--            only_render_image_at_cursor = false,
+--          },
+--        },
+--        max_width = 100,
+--        max_height = 12,
+--        max_height_window_percentage = math.huge,
+--        max_width_window_percentage = math.huge,
+--        window_overlap_clear_enabled = true,
+--        window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
+--      })
+--    end,
+--  }
+-- 
   use {
     "benlubas/molten-nvim",
     version = "^1.0.0",

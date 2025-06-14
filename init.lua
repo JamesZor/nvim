@@ -11,9 +11,11 @@ require "user.toggleterm"
 require "user.comment"
 require "user.molten"
 require "user.inlay_hints"
+require "user.dadbod".setup()
+--require "user.treesitter_dbml".setup()
+--require "user.dbml".setup()
+vim.cmd('source ~/.config/nvim/db_ui_connections.vim')
 
-
---require "user.conda"
 --
 -- Add all possible Lua paths
 package.path = package.path .. 

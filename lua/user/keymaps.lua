@@ -89,7 +89,7 @@ keymap("v", ">", ">gv", opts)
 -- Move text up and down
 keymap("v", "<A-j>", ":m .+1<CR>==", opts)
 keymap("v", "<A-k>", ":m .-2<CR>==", opts)
-keymap("v", "p", '"_dP', opts)
+--keymap("v", "p", '"_dP', opts)
 
 -- remove highlighting when pressing esc 
 vim.api.nvim_set_keymap('n', '<Esc>', ':noh<CR>', opts )
@@ -144,89 +144,4 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.keymap.set("n", "<leader>pT", "<cmd>TestFile<CR>", {buffer=0, desc="Test file"})
   end
 })
-
-
--- for bet project 
-local function install_betting_package()
-    -- Define the project directory where setup.py is located
-    local project_path = '/home/james/projects/Betting'
-    
-    -- Use your conda environment's Python to run pip install
-    local python_path = '/home/james/miniconda3/envs/py3.11/bin/python'
-    
-    -- Create the full command: python -m pip install -e .
-    local pip_install = vim.fn.jobstart(python_path .. ' -m pip install -e .', {
-        -- Set the working directory to your project path
-        cwd = project_path,
-        
-        -- Handle standard output - show what pip is doing
-        on_stdout = function(_, data)
-            if data then
-                vim.schedule(function()
-                    for _, line in ipairs(data) do
-                        if line ~= "" then
-                            print(line)
-                        end
-                    end
-                end)
-            end
-        end,
-        
-        -- Handle any errors that might occur
-        on_stderr = function(_, data)
-            if data then
-                vim.schedule(function()
-                    for _, line in ipairs(data) do
-                        if line ~= "" then
-                            print("Error: " .. line)
-                        end
-                    end
-                end)
-            end
-        end,
-        
-        -- Show a completion message when done
-        on_exit = function(_, code)
-            if code == 0 then
-                vim.notify("Package installed successfully!", vim.log.levels.INFO)
-            else
-                vim.notify("Failed to install package", vim.log.levels.ERROR)
-            end
-        end
-    })
-end
-
--- Add a keybinding to trigger the installation
-keymap("n", "<leader>pi", "", {
-    callback = install_betting_package,
-    noremap = true,
-    silent = true,
-    desc = "Install Betting Package"
-})
-
--- First, let's create a function that chains all these actions together
-local function install_and_restart()
-    -- First action: Install betting package
-    install_betting_package()  -- Assuming this function exists
-    
-    -- Second action: Restart Molten
-    vim.cmd('MoltenRestart')
-    
-    -- Third action: Restart LSP
-    -- We add a small delay to ensure the package installation completes
-    vim.defer_fn(function()
-        vim.cmd('LspRestart')
-    end, 1000)  -- 1000ms delay
-    
-    -- Optional: Add feedback to show the sequence is running
-    vim.notify('Restarting environment...', vim.log.levels.INFO)
-end
-
--- Now let's create the keybinding
-vim.keymap.set('n', '<leader>pr', install_and_restart, {
-    noremap = true,
-    silent = true,
-    desc = "Install Package and Restart Environment"
-})
-
 

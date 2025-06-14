@@ -7,9 +7,10 @@ local servers = {
   "ruff",   -- Added for fast Python linting/fixing
   "jsonls",
   -- "texlab",
-  -- "sqls",
+  "sqls",
   -- "matlab_ls",
   "julials",
+  "efm",
   -- 'marksman',
 }
 
@@ -24,6 +25,30 @@ local settings = {
   },
   log_level = vim.log.levels.INFO,
   max_concurrent_installers = 4,
+
+  -- dbml stuff
+  efm = {
+    init_options = {
+      documentFormatting = true,
+      documentRangeFormatting = true,
+    },
+    filetypes = { "dbml", "sql" }, -- Add DBML to efm filetypes
+    settings = {
+      rootMarkers = { ".git/" },
+      languages = {
+        dbml = {
+          {
+            lintCommand = "dbml-validate ${INPUT}",
+            lintStdin = false,
+            lintFormats = {
+              "%f:%l:%c: %m",
+            },
+            lintIgnoreExitCode = true,
+          },
+        },
+      },
+    },
+  },
 }
 
 local tools = {

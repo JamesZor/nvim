@@ -49,8 +49,8 @@ local function save_profiles(threshold)
 end
 
 time([[Luarocks path setup]], true)
-local package_path_str = "/home/james/.cache/nvim/packer_hererocks/2.1.1731601260/share/lua/5.1/?.lua;/home/james/.cache/nvim/packer_hererocks/2.1.1731601260/share/lua/5.1/?/init.lua;/home/james/.cache/nvim/packer_hererocks/2.1.1731601260/lib/luarocks/rocks-5.1/?.lua;/home/james/.cache/nvim/packer_hererocks/2.1.1731601260/lib/luarocks/rocks-5.1/?/init.lua"
-local install_cpath_pattern = "/home/james/.cache/nvim/packer_hererocks/2.1.1731601260/lib/lua/5.1/?.so"
+local package_path_str = "/home/james/.cache/nvim/packer_hererocks/2.1.1741730670/share/lua/5.1/?.lua;/home/james/.cache/nvim/packer_hererocks/2.1.1741730670/share/lua/5.1/?/init.lua;/home/james/.cache/nvim/packer_hererocks/2.1.1741730670/lib/luarocks/rocks-5.1/?.lua;/home/james/.cache/nvim/packer_hererocks/2.1.1741730670/lib/luarocks/rocks-5.1/?/init.lua"
+local install_cpath_pattern = "/home/james/.cache/nvim/packer_hererocks/2.1.1741730670/lib/lua/5.1/?.so"
 if not string.find(package.path, package_path_str, 1, true) then
   package.path = package.path .. ';' .. package_path_str
 end
@@ -115,6 +115,11 @@ _G.packer_plugins = {
     path = "/home/james/.local/share/nvim/site/pack/packer/start/colorschemes",
     url = "https://github.com/lunarvim/colorschemes"
   },
+  ["formatter.nvim"] = {
+    loaded = true,
+    path = "/home/james/.local/share/nvim/site/pack/packer/start/formatter.nvim",
+    url = "https://github.com/mhartington/formatter.nvim"
+  },
   ["friendly-snippets"] = {
     loaded = true,
     path = "/home/james/.local/share/nvim/site/pack/packer/start/friendly-snippets",
@@ -126,15 +131,35 @@ _G.packer_plugins = {
     url = "https://github.com/ellisonleao/gruvbox.nvim"
   },
   ["image.nvim"] = {
-    config = { "\27LJ\2\n©\5\0\0\6\0\18\0\0236\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\a\0005\4\4\0005\5\5\0=\5\6\4=\4\b\0035\4\t\0=\4\n\3=\3\v\0026\3\f\0009\3\r\3=\3\14\0026\3\f\0009\3\r\3=\3\15\0025\3\16\0=\3\17\2B\0\2\1K\0\1\0#window_overlap_clear_ft_ignore\1\4\0\0\rcmp_menu\rcmp_docs\5 max_width_window_percentage!max_height_window_percentage\thuge\tmath\17integrations\nneorg\1\0\4 only_render_image_at_cursor\1\27download_remote_images\2\25clear_in_insert_mode\1\fenabled\2\rmarkdown\1\0\2\rmarkdown\0\nneorg\0\14filetypes\1\3\0\0\rmarkdown\fvimwiki\1\0\5\14filetypes\0 only_render_image_at_cursor\1\27download_remote_images\2\25clear_in_insert_mode\1\fenabled\2\1\0\b\14max_width\3d\17integrations\0#window_overlap_clear_ft_ignore\0\fbackend\nkitty!window_overlap_clear_enabled\2 max_width_window_percentage\0!max_height_window_percentage\0\15max_height\3\f\nsetup\nimage\frequire\0" },
+    config = { "\27LJ\2\né\6\0\0\6\0\20\0\0256\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\a\0005\4\4\0005\5\5\0=\5\6\4=\4\b\0035\4\t\0=\4\n\3=\3\v\0026\3\f\0009\3\r\3=\3\14\0026\3\f\0009\3\r\3=\3\15\0025\3\16\0=\3\17\0025\3\18\0=\3\19\2B\0\2\1K\0\1\0\vrender\1\0\5\16min_padding\3\5\21background_color\1\21foreground_color\1\15use_dither\2\15show_label\2#window_overlap_clear_ft_ignore\1\4\0\0\rcmp_menu\rcmp_docs\5 max_width_window_percentage!max_height_window_percentage\thuge\tmath\17integrations\nneorg\1\0\4\fenabled\2 only_render_image_at_cursor\1\27download_remote_images\2\25clear_in_insert_mode\1\rmarkdown\1\0\2\nneorg\0\rmarkdown\0\14filetypes\1\3\0\0\rmarkdown\fvimwiki\1\0\5\fenabled\2\14filetypes\0 only_render_image_at_cursor\1\27download_remote_images\2\25clear_in_insert_mode\1\1\0\t\15max_height\3\20\14max_width\3ñ\1#window_overlap_clear_ft_ignore\0\vrender\0\17integrations\0\fbackend\nkitty!window_overlap_clear_enabled\2 max_width_window_percentage\0!max_height_window_percentage\0\nsetup\nimage\frequire\0" },
     loaded = true,
     path = "/home/james/.local/share/nvim/site/pack/packer/start/image.nvim",
     url = "https://github.com/3rd/image.nvim"
+  },
+  ["inlay-hint.nvim"] = {
+    loaded = true,
+    path = "/home/james/.local/share/nvim/site/pack/packer/start/inlay-hint.nvim",
+    url = "https://github.com/felpafel/inlay-hint.nvim"
+  },
+  ["lsp_signature.nvim"] = {
+    loaded = true,
+    path = "/home/james/.local/share/nvim/site/pack/packer/start/lsp_signature.nvim",
+    url = "https://github.com/ray-x/lsp_signature.nvim"
+  },
+  ["lspsaga.nvim"] = {
+    loaded = true,
+    path = "/home/james/.local/share/nvim/site/pack/packer/start/lspsaga.nvim",
+    url = "https://github.com/glepnir/lspsaga.nvim"
   },
   ["mason-lspconfig.nvim"] = {
     loaded = true,
     path = "/home/james/.local/share/nvim/site/pack/packer/start/mason-lspconfig.nvim",
     url = "https://github.com/williamboman/mason-lspconfig.nvim"
+  },
+  ["mason-tool-installer.nvim"] = {
+    loaded = true,
+    path = "/home/james/.local/share/nvim/site/pack/packer/start/mason-tool-installer.nvim",
+    url = "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim"
   },
   ["mason.nvim"] = {
     loaded = true,
@@ -172,6 +197,11 @@ _G.packer_plugins = {
     path = "/home/james/.local/share/nvim/site/pack/packer/start/nvim-ts-rainbow",
     url = "https://github.com/p00f/nvim-ts-rainbow"
   },
+  ["nvim-web-devicons"] = {
+    loaded = true,
+    path = "/home/james/.local/share/nvim/site/pack/packer/start/nvim-web-devicons",
+    url = "https://github.com/nvim-tree/nvim-web-devicons"
+  },
   ["packer.nvim"] = {
     loaded = true,
     path = "/home/james/.local/share/nvim/site/pack/packer/start/packer.nvim",
@@ -202,6 +232,31 @@ _G.packer_plugins = {
     path = "/home/james/.local/share/nvim/site/pack/packer/start/toggleterm.nvim",
     url = "https://github.com/akinsho/toggleterm.nvim"
   },
+  ["tree-sitter-dbml"] = {
+    loaded = true,
+    path = "/home/james/.local/share/nvim/site/pack/packer/start/tree-sitter-dbml",
+    url = "https://github.com/dynamotn/tree-sitter-dbml"
+  },
+  ["vim-dadbod"] = {
+    loaded = true,
+    path = "/home/james/.local/share/nvim/site/pack/packer/start/vim-dadbod",
+    url = "https://github.com/tpope/vim-dadbod"
+  },
+  ["vim-dadbod-completion"] = {
+    loaded = true,
+    path = "/home/james/.local/share/nvim/site/pack/packer/start/vim-dadbod-completion",
+    url = "https://github.com/kristijanhusak/vim-dadbod-completion"
+  },
+  ["vim-dadbod-ui"] = {
+    loaded = true,
+    path = "/home/james/.local/share/nvim/site/pack/packer/start/vim-dadbod-ui",
+    url = "https://github.com/kristijanhusak/vim-dadbod-ui"
+  },
+  ["vim-dbml"] = {
+    loaded = true,
+    path = "/home/james/.local/share/nvim/site/pack/packer/start/vim-dbml",
+    url = "https://github.com/jidn/vim-dbml"
+  },
   vimtex = {
     loaded = true,
     path = "/home/james/.local/share/nvim/site/pack/packer/start/vimtex",
@@ -210,18 +265,18 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
+-- Config for: molten-nvim
+time([[Config for molten-nvim]], true)
+try_loadstring("\27LJ\2\n9\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\16user.molten\frequire\0", "config", "molten-nvim")
+time([[Config for molten-nvim]], false)
 -- Config for: image.nvim
 time([[Config for image.nvim]], true)
-try_loadstring("\27LJ\2\n©\5\0\0\6\0\18\0\0236\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\a\0005\4\4\0005\5\5\0=\5\6\4=\4\b\0035\4\t\0=\4\n\3=\3\v\0026\3\f\0009\3\r\3=\3\14\0026\3\f\0009\3\r\3=\3\15\0025\3\16\0=\3\17\2B\0\2\1K\0\1\0#window_overlap_clear_ft_ignore\1\4\0\0\rcmp_menu\rcmp_docs\5 max_width_window_percentage!max_height_window_percentage\thuge\tmath\17integrations\nneorg\1\0\4 only_render_image_at_cursor\1\27download_remote_images\2\25clear_in_insert_mode\1\fenabled\2\rmarkdown\1\0\2\rmarkdown\0\nneorg\0\14filetypes\1\3\0\0\rmarkdown\fvimwiki\1\0\5\14filetypes\0 only_render_image_at_cursor\1\27download_remote_images\2\25clear_in_insert_mode\1\fenabled\2\1\0\b\14max_width\3d\17integrations\0#window_overlap_clear_ft_ignore\0\fbackend\nkitty!window_overlap_clear_enabled\2 max_width_window_percentage\0!max_height_window_percentage\0\15max_height\3\f\nsetup\nimage\frequire\0", "config", "image.nvim")
+try_loadstring("\27LJ\2\né\6\0\0\6\0\20\0\0256\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\a\0005\4\4\0005\5\5\0=\5\6\4=\4\b\0035\4\t\0=\4\n\3=\3\v\0026\3\f\0009\3\r\3=\3\14\0026\3\f\0009\3\r\3=\3\15\0025\3\16\0=\3\17\0025\3\18\0=\3\19\2B\0\2\1K\0\1\0\vrender\1\0\5\16min_padding\3\5\21background_color\1\21foreground_color\1\15use_dither\2\15show_label\2#window_overlap_clear_ft_ignore\1\4\0\0\rcmp_menu\rcmp_docs\5 max_width_window_percentage!max_height_window_percentage\thuge\tmath\17integrations\nneorg\1\0\4\fenabled\2 only_render_image_at_cursor\1\27download_remote_images\2\25clear_in_insert_mode\1\rmarkdown\1\0\2\nneorg\0\rmarkdown\0\14filetypes\1\3\0\0\rmarkdown\fvimwiki\1\0\5\fenabled\2\14filetypes\0 only_render_image_at_cursor\1\27download_remote_images\2\25clear_in_insert_mode\1\1\0\t\15max_height\3\20\14max_width\3ñ\1#window_overlap_clear_ft_ignore\0\vrender\0\17integrations\0\fbackend\nkitty!window_overlap_clear_enabled\2 max_width_window_percentage\0!max_height_window_percentage\0\nsetup\nimage\frequire\0", "config", "image.nvim")
 time([[Config for image.nvim]], false)
 -- Config for: Comment.nvim
 time([[Config for Comment.nvim]], true)
 try_loadstring("\27LJ\2\n5\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\fComment\frequire\0", "config", "Comment.nvim")
 time([[Config for Comment.nvim]], false)
--- Config for: molten-nvim
-time([[Config for molten-nvim]], true)
-try_loadstring("\27LJ\2\n9\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\16user.molten\frequire\0", "config", "molten-nvim")
-time([[Config for molten-nvim]], false)
 
 _G._packer.inside_compile = false
 if _G._packer.needs_bufread == true then
