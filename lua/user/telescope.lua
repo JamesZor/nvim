@@ -79,15 +79,17 @@ telescope.setup {
       },
     },
   },
-  -- pickers = {
-    -- Default configuration for builtin pickers goes here:
-    -- picker_name = {
-    --   picker_config_key = value,
-    --   ...
-    -- }
-    -- Now the picker_config_key will be applied every time you call this
-    -- builtin picker
-  -- },
+  pickers = {
+    find_files = {
+      hidden = true,      -- Show hidden files (dotfiles)
+      no_ignore = true,   -- Ignore .gitignore, .ignore files
+    },
+    live_grep = {
+      additional_args = function()
+        return {"--hidden", "--no-ignore"}
+      end
+    }
+  },
   extensions = {
     media_files = {
         -- filetypes whitelist
