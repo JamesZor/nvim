@@ -2,7 +2,7 @@ local util = require('lspconfig/util')
 
 local servers = {
   "lua_ls",
-  "pyright",
+--  "pyright",
   "pylsp",      -- Added for enhanced Python IDE features
   "ruff",   -- Added for fast Python linting/fixing
   "jsonls",
@@ -110,30 +110,30 @@ for _, server in pairs(servers) do
         }
       }
     }
-  elseif server == "pylsp" then
-    -- Configure python-lsp-server with useful plugins
-    opts.settings = {
-      pylsp = {
-        plugins = {
-          flake8 = { enabled = false },  -- Use ruff instead
-          pycodestyle = { enabled = false },  -- Use ruff instead
-          pyflakes = { enabled = false },  -- Use ruff instead
-          pylint = { enabled = false },  -- Use ruff instead
-          yapf = { enabled = false },  -- Use black instead
-          autopep8 = { enabled = false },  -- Use black instead
-          jedi_completion = { 
-            enabled = true,
-            fuzzy = true,
-          },
-          jedi_hover = { enabled = true },
-          jedi_references = { enabled = true },
-          jedi_signature_help = { enabled = true },
-          jedi_symbols = { enabled = true, all_scopes = true },
-          rope_completion = { enabled = true },
-          rope_autoimport = { enabled = true },
-        }
-      }
-    }
+--  elseif server == "pylsp" then
+--    -- Configure python-lsp-server with useful plugins
+--    opts.settings = {
+--      pylsp = {
+--        plugins = {
+--          flake8 = { enabled = false },  -- Use ruff instead
+--          pycodestyle = { enabled = false },  -- Use ruff instead
+--          pyflakes = { enabled = false },  -- Use ruff instead
+--          pylint = { enabled = false },  -- Use ruff instead
+--          yapf = { enabled = false },  -- Use black instead
+--          autopep8 = { enabled = false },  -- Use black instead
+--          jedi_completion = { 
+--            enabled = true,
+--            fuzzy = true,
+--          },
+--          jedi_hover = { enabled = true },
+--          jedi_references = { enabled = true },
+--          jedi_signature_help = { enabled = true },
+--          jedi_symbols = { enabled = true, all_scopes = true },
+--          rope_completion = { enabled = true },
+--          rope_autoimport = { enabled = true },
+--        }
+--      }
+--    }
 
   elseif server == "julials" then
     opts.filetypes = {"julia"}
@@ -171,7 +171,7 @@ for _, server in pairs(servers) do
   end
 
 
-  elseif server == "ruff_lsp" then
+  elseif server == "ruff" then
     -- Configure ruff-lsp for fast linting and fixing
     opts.init_options = {
       settings = {

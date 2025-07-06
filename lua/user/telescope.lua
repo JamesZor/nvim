@@ -14,6 +14,14 @@ telescope.setup {
     selection_caret = " ",
     path_display = { "smart" },
 
+    -- Add file ignore patterns to exclude Python-related files
+    file_ignore_patterns = {
+      "%.egg%-info",      -- *.egg-info directories
+      "__pycache__",      -- __pycache__ directories  
+      "%.pyc$",           -- .pyc files
+      "%.git",            -- 
+    },
+
     mappings = {
       i = {
         ["<C-n>"] = actions.cycle_history_next,
