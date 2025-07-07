@@ -20,6 +20,14 @@ telescope.setup {
       "__pycache__",      -- __pycache__ directories  
       "%.pyc$",           -- .pyc files
       "%.git",            -- 
+      "%.tff", -- text fonts/ latex 
+      "%.ttf", -- text fonts/ latex 
+      "%.bbl",
+      "%.bcf",
+      "%.blg",
+      "%.bcf",
+      "%.aux",
+      "%.xml",
     },
 
     mappings = {
