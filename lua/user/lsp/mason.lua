@@ -94,46 +94,46 @@ for _, server in pairs(servers) do
   
   server = vim.split(server, "@")[1]
 
-  if server == "pyright" then
-    -- Let Pyright handle type checking but with better settings
+  if server == "pylsp" then
+    -- Simple debug
+    local conda_prefix = os.getenv("CONDA_PREFIX")
+    --print("DEBUG: CONDA_PREFIX = " .. (conda_prefix or "NONE"))
+    
+    -- Configure python-lsp-server with useful plugins  
     opts.settings = {
-      python = {
-        analysis = {
-          autoSearchPaths = true,
-          useLibraryCodeForTypes = true,
-          diagnosticMode = "workspace",
-          typeCheckingMode = "basic",  -- Enable basic type checking
-          inlayHints = {
-            variableTypes = true,      -- Show variable types inline
-            functionReturnTypes = true -- Show return types inline
-          }
+      pylsp = {
+        plugins = {
+          flake8 = { enabled = false },
+          pycodestyle = { enabled = false },
+          pyflakes = { enabled = false },
+          pylint = { enabled = false },
+          yapf = { enabled = false },
+          autopep8 = { enabled = false },
+          rope_autoimport = { enabled = false },
+          rope_completion = { enabled = false },
+          jedi_completion = { 
+            enabled = true,
+            fuzzy = true,
+            include_params_in_completion = true,
+            include_class_objects = true,
+            include_function_objects = true,
+          },
+          jedi_hover = { enabled = true },
+          jedi_references = { enabled = true },
+          jedi_signature_help = { enabled = true },
+          jedi_symbols = { enabled = true, all_scopes = true },
         }
       }
     }
---  elseif server == "pylsp" then
---    -- Configure python-lsp-server with useful plugins
---    opts.settings = {
---      pylsp = {
---        plugins = {
---          flake8 = { enabled = false },  -- Use ruff instead
---          pycodestyle = { enabled = false },  -- Use ruff instead
---          pyflakes = { enabled = false },  -- Use ruff instead
---          pylint = { enabled = false },  -- Use ruff instead
---          yapf = { enabled = false },  -- Use black instead
---          autopep8 = { enabled = false },  -- Use black instead
---          jedi_completion = { 
---            enabled = true,
---            fuzzy = true,
---          },
---          jedi_hover = { enabled = true },
---          jedi_references = { enabled = true },
---          jedi_signature_help = { enabled = true },
---          jedi_symbols = { enabled = true, all_scopes = true },
---          rope_completion = { enabled = true },
---          rope_autoimport = { enabled = true },
---        }
---      }
---    }
+    
+    -- Set python path
+    if conda_prefix then
+      opts.cmd = { conda_prefix .. "/bin/python", "-m", "pylsp" }
+     -- print("DEBUG: Using python = " .. conda_prefix .. "/bin/python")
+    else
+      opts.cmd = { "/home/james/miniconda3/envs/webscraper/bin/python", "-m", "pylsp" }
+      --print("DEBUG: Using fallback webscraper python")
+    end
 
   elseif server == "julials" then
     opts.filetypes = {"julia"}
@@ -169,7 +169,6 @@ for _, server in pairs(servers) do
   opts.root_dir = function(fname)
     return util.find_git_ancestor(fname) or util.path.dirname(fname)
   end
-
 
   elseif server == "ruff" then
     -- Configure ruff-lsp for fast linting and fixing
@@ -229,6 +228,3 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     end
   end,
 })
-
-
-
