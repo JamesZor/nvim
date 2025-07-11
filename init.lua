@@ -12,6 +12,7 @@ require "user.comment"
 require "user.molten"
 require "user.inlay_hints"
 require "user.dadbod".setup()
+require "user.iron"
 --require "user.treesitter_dbml".setup()
 --require "user.dbml".setup()
 vim.cmd('source ~/.config/nvim/db_ui_connections.vim')

@@ -136,39 +136,36 @@ for _, server in pairs(servers) do
     end
 
   elseif server == "julials" then
-    opts.filetypes = {"julia"}
-    opts.settings = {
-      julia = {
-        -- Julia executable settings
-        executablePath = "julia",
-        
-        -- Language server settings
-        symbolCacheDownload = true,  -- Enable symbol cache
-        
-        -- Linting settings
-        lint = {
-          missingrefs = "all",  -- Report all missing references
-          iter = true,          -- Iterative linting
-          call = true,          -- Check function calls
-          typePropagation = true  -- Enable type propagation
-        },
-        
-        -- Formatting settings
-        format = {
-          indent = 4,  -- Number of spaces for indentation
-        },
-        
-        -- Completion settings
-        completionmode = "qualify",  -- Add module qualifier to completions
-        
-        -- Environment settings
-        environmentPath = vim.fn.expand("~/.julia/environments/v1.11")  -- Point to your Julia env
+      -- Use the Mason-installed julia-lsp instead of custom command
+      -- Don't override the cmd - let Mason handle it
+      opts.filetypes = {"julia"}
+      opts.settings = {
+        julia = {
+          -- Language server settings
+          symbolCacheDownload = true,
+          
+          -- Linting settings
+          lint = {
+            missingrefs = "all",
+            iter = true,
+            call = true,
+            typePropagation = true
+          },
+          
+          -- Formatting settings
+          format = {
+            indent = 4,
+          },
+          
+          -- Completion settings
+          completionmode = "qualify",
+        }
       }
-    }
-  opts.single_file_support = true
-  opts.root_dir = function(fname)
-    return util.find_git_ancestor(fname) or util.path.dirname(fname)
-  end
+      
+      opts.single_file_support = true
+      opts.root_dir = function(fname)
+        return util.find_git_ancestor(fname) or util.path.dirname(fname)
+      end
 
   elseif server == "ruff" then
     -- Configure ruff-lsp for fast linting and fixing

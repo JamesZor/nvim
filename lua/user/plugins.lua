@@ -39,6 +39,12 @@ packer.init {
 
 -- Install your plugins here
 return packer.startup(function(use)
+  use {
+    "Vigemus/iron.nvim",
+    config = function()
+      require("user.iron")
+    end
+  }
 
   -- LSP signature - shows function signatures as you type
   use "ray-x/lsp_signature.nvim"
