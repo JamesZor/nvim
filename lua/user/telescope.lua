@@ -16,16 +16,17 @@ telescope.setup {
 
     -- Add file ignore patterns to exclude Python-related files
     file_ignore_patterns = {
-      "%.egg%-info",      -- *.egg-info directories
-      "__pycache__",      -- __pycache__ directories  
-      "%.pyc$",           -- .pyc files
-      "%.git",            -- 
-      "%.tff", -- text fonts/ latex 
-      "%.ttf", -- text fonts/ latex 
+      "%.egg%-info",
+      "__pycache__",
+      "%.mypy_cache/",    -- matches .mypy_cache/ directories
+      "mypy_cache/",      -- matches mypy_cache/ directories
+      "%.pyc$",
+      "%.git",
+      "%.tff",
+      "%.ttf",
       "%.bbl",
       "%.bcf",
       "%.blg",
-      "%.bcf",
       "%.aux",
       "%.xml",
     },

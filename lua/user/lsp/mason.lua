@@ -107,6 +107,28 @@ setup_server("pylsp", {
         autopep8 = { enabled = false },
         rope_autoimport = { enabled = false },
         rope_completion = { enabled = false },
+        
+        -- Enable mypy for type checking
+        pylsp_mypy = { 
+          enabled = true,
+          live_mode = true,
+          strict = false,
+          overrides = {
+            "--no-warn-no-return",
+            "--check-untyped-defs",
+    --        "--no-warn-no-return",          -- Don't warn about functions that don't return
+            "--warn-unused-ignores",        -- Warn about unnecessary # type: ignore comments
+            "--warn-redundant-casts",       -- Warn about redundant type casts
+            "--warn-return-any",            -- Warn when returning Any from a function
+            "--warn-unreachable",           -- Warn about unreachable code
+            "--strict-equality",            -- Strict equality checks
+            "--extra-checks",               -- Enable additional checks
+           "--follow-imports=normal",          -- How to handle imports: normal|silent|skip|error
+            "--namespace-packages",             -- Support namespace packages
+          true}
+        },
+        
+        -- Enable jedi features
         jedi_completion = { 
           enabled = true,
           fuzzy = true,
