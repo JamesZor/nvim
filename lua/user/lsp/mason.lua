@@ -1,17 +1,25 @@
 local util = require('lspconfig/util')
 
-local servers = {
-  "lua_ls",
---  "pyright",
-  "pylsp",      -- Added for enhanced Python IDE features
-  "ruff",   -- Added for fast Python linting/fixing
-  "jsonls",
-  -- "texlab",
-  "sqls",
-  -- "matlab_ls",
-  "julials",
-  "efm",
-  -- 'marksman',
+-- Disable lspconfig's automatic server detection
+vim.g.lspconfig_automatic_setup = false
+
+-- Tools to install (but NOT auto-configure)
+local tools_only = {
+  'mypy',
+  'black', 
+  'isort',
+  'debugpy',
+  'stylua',
+  'jq',
+  'shellcheck',
+  -- LSP binaries (we'll configure manually)
+  'lua-language-server',
+  'python-lsp-server', 
+  'ruff',
+  'json-lsp',
+  'sqls',
+  'julia-lsp',
+  'efm',
 }
 
 local settings = {
@@ -25,56 +33,21 @@ local settings = {
   },
   log_level = vim.log.levels.INFO,
   max_concurrent_installers = 4,
-
-  -- dbml stuff
-  efm = {
-    init_options = {
-      documentFormatting = true,
-      documentRangeFormatting = true,
-    },
-    filetypes = { "dbml", "sql" }, -- Add DBML to efm filetypes
-    settings = {
-      rootMarkers = { ".git/" },
-      languages = {
-        dbml = {
-          {
-            lintCommand = "dbml-validate ${INPUT}",
-            lintStdin = false,
-            lintFormats = {
-              "%f:%l:%c: %m",
-            },
-            lintIgnoreExitCode = true,
-          },
-        },
-      },
-    },
-  },
 }
 
-local tools = {
-  'mypy',       -- Static type checker
-  'black',      -- Code formatter
-  'isort',      -- Import sorter
-  'debugpy',    -- Debug adapter for nvim-dap
-}
-
--- Add this in your main setup logic to throttle UI updates
 vim.diagnostic.config({
-  update_in_insert = false,  -- Only update diagnostics after leaving insert mode
+  update_in_insert = false,
   underline = true,
   virtual_text = { spacing = 4 },
   severity_sort = true,
 })
 
+-- Only setup Mason for installing tools, NO auto-configuration
 require("mason").setup(settings)
-require("mason-lspconfig").setup({
-  ensure_installed = servers,
-  automatic_installation = true,
-})
 
--- Setup Mason tools installer
+-- Install tools via mason-tool-installer ONLY (no mason-lspconfig)
 require("mason-tool-installer").setup({
-  ensure_installed = tools,
+  ensure_installed = tools_only,
   auto_update = true,
   run_on_start = true,
 })
@@ -84,118 +57,139 @@ if not lspconfig_status_ok then
   return
 end
 
-local opts = {}
+-- Clear any existing configurations to prevent conflicts
+local configs = require('lspconfig.configs')
+for server_name, _ in pairs(configs) do
+  configs[server_name] = nil
+end
 
-for _, server in pairs(servers) do
-  opts = {
+-- MANUAL LSP configuration ONLY - explicit control
+local function setup_server(server_name, custom_opts)
+  local default_opts = {
     on_attach = require("user.lsp.handlers").on_attach,
     capabilities = require("user.lsp.handlers").capabilities,
   }
   
-  server = vim.split(server, "@")[1]
-
-  if server == "pylsp" then
-    -- Simple debug
-    local conda_prefix = os.getenv("CONDA_PREFIX")
-    --print("DEBUG: CONDA_PREFIX = " .. (conda_prefix or "NONE"))
-    
-    -- Configure python-lsp-server with useful plugins  
-    opts.settings = {
-      pylsp = {
-        plugins = {
-          flake8 = { enabled = false },
-          pycodestyle = { enabled = false },
-          pyflakes = { enabled = false },
-          pylint = { enabled = false },
-          yapf = { enabled = false },
-          autopep8 = { enabled = false },
-          rope_autoimport = { enabled = false },
-          rope_completion = { enabled = false },
-          jedi_completion = { 
-            enabled = true,
-            fuzzy = true,
-            include_params_in_completion = true,
-            include_class_objects = true,
-            include_function_objects = true,
-          },
-          jedi_hover = { enabled = true },
-          jedi_references = { enabled = true },
-          jedi_signature_help = { enabled = true },
-          jedi_symbols = { enabled = true, all_scopes = true },
-        }
-      }
-    }
-    
-    -- Set python path
-    if conda_prefix then
-      opts.cmd = { conda_prefix .. "/bin/python", "-m", "pylsp" }
-     -- print("DEBUG: Using python = " .. conda_prefix .. "/bin/python")
-    else
-      opts.cmd = { "/home/james/miniconda3/envs/webscraper/bin/python", "-m", "pylsp" }
-      --print("DEBUG: Using fallback webscraper python")
-    end
-
-  elseif server == "julials" then
-      -- Use the Mason-installed julia-lsp instead of custom command
-      -- Don't override the cmd - let Mason handle it
-      opts.filetypes = {"julia"}
-      opts.settings = {
-        julia = {
-          -- Language server settings
-          symbolCacheDownload = true,
-          
-          -- Linting settings
-          lint = {
-            missingrefs = "all",
-            iter = true,
-            call = true,
-            typePropagation = true
-          },
-          
-          -- Formatting settings
-          format = {
-            indent = 4,
-          },
-          
-          -- Completion settings
-          completionmode = "qualify",
-        }
-      }
-      
-      opts.single_file_support = true
-      opts.root_dir = function(fname)
-        return util.find_git_ancestor(fname) or util.path.dirname(fname)
-      end
-
-  elseif server == "ruff" then
-    -- Configure ruff-lsp for fast linting and fixing
-    opts.init_options = {
-      settings = {
-        -- Configure ruff linter settings
-        lint = {
-          run = "onSave",  -- Run on save
-        },
-        organizeImports = true,
-        fixAll = true,
-      }
-    }
+  -- Ensure consistent position encoding for all servers
+  if default_opts.capabilities and default_opts.capabilities.general then
+    default_opts.capabilities.general.positionEncodings = { "utf-16" }
   end
   
-  local require_ok, conf_opts = pcall(require, "user.lsp.settings." .. server)
+  local opts = vim.tbl_deep_extend("force", default_opts, custom_opts or {})
+  
+  -- Check if server-specific config exists
+  local require_ok, conf_opts = pcall(require, "user.lsp.settings." .. server_name)
   if require_ok then
-    opts = vim.tbl_deep_extend("force", conf_opts, opts)
+    opts = vim.tbl_deep_extend("force", opts, conf_opts)
   end
   
-  lspconfig[server].setup(opts)
+  lspconfig[server_name].setup(opts)
 end
 
--- Set up formatter
+-- Setup ONLY the servers you want - nothing else
+setup_server("lua_ls")
+setup_server("jsonls") 
+setup_server("sqls")
+
+-- Custom pylsp - YOUR version only
+local conda_prefix = os.getenv("CONDA_PREFIX")
+setup_server("pylsp", {
+  cmd = conda_prefix and { conda_prefix .. "/bin/python", "-m", "pylsp" } or 
+        { "/home/james/miniconda3/envs/webscraper/bin/python", "-m", "pylsp" },
+  settings = {
+    pylsp = {
+      plugins = {
+        flake8 = { enabled = false },
+        pycodestyle = { enabled = false },
+        pyflakes = { enabled = false },
+        pylint = { enabled = false },
+        yapf = { enabled = false },
+        autopep8 = { enabled = false },
+        rope_autoimport = { enabled = false },
+        rope_completion = { enabled = false },
+        jedi_completion = { 
+          enabled = true,
+          fuzzy = true,
+          include_params_in_completion = true,
+          include_class_objects = true,
+          include_function_objects = true,
+        },
+        jedi_hover = { enabled = true },
+        jedi_references = { enabled = true },
+        jedi_signature_help = { enabled = true },
+        jedi_symbols = { enabled = true, all_scopes = true },
+      }
+    }
+  }
+})
+
+-- Custom ruff - single instance with UTF-16 encoding
+setup_server("ruff", {
+  capabilities = vim.tbl_deep_extend("force", require("user.lsp.handlers").capabilities, {
+    general = {
+      positionEncodings = { "utf-16" }
+    }
+  }),
+  init_options = {
+    settings = {
+      lint = { run = "onSave" },
+      organizeImports = true,
+      fixAll = true,
+    }
+  }
+})
+
+-- Custom julia setup
+setup_server("julials", {
+  filetypes = {"julia"},
+  single_file_support = true,
+  root_dir = function(fname)
+    return util.find_git_ancestor(fname) or util.path.dirname(fname)
+  end,
+  settings = {
+    julia = {
+      symbolCacheDownload = true,
+      lint = {
+        missingrefs = "all",
+        iter = true,
+        call = true,
+        typePropagation = true
+      },
+      format = { indent = 4 },
+      completionmode = "qualify",
+    }
+  }
+})
+
+-- Custom efm setup
+setup_server("efm", {
+  init_options = {
+    documentFormatting = true,
+    documentRangeFormatting = true,
+  },
+  filetypes = { "dbml", "sql" },
+  settings = {
+    rootMarkers = { ".git/" },
+    languages = {
+      dbml = {
+        {
+          lintCommand = "dbml-validate ${INPUT}",
+          lintStdin = false,
+          lintFormats = { "%f:%l:%c: %m" },
+          lintIgnoreExitCode = true,
+        },
+      },
+    },
+  }
+})
+
+-- Formatter setup (moved here to avoid duplication)
 local formatter_status_ok, formatter = pcall(require, "formatter")
 if formatter_status_ok then
   formatter.setup({
+    logging = false,
     filetype = {
       python = {
-        -- Use black to format Python code
         function()
           return {
             exe = "black",
@@ -203,7 +197,6 @@ if formatter_status_ok then
             stdin = true,
           }
         end,
-        -- Use isort to organize imports
         function()
           return {
             exe = "isort",
@@ -212,16 +205,40 @@ if formatter_status_ok then
           }
         end,
       },
-    }
+      lua = {
+        function()
+          return {
+            exe = "stylua",
+            args = {
+              "--search-parent-directories",
+              "--stdin-filepath",
+              vim.api.nvim_buf_get_name(0),
+              "--",
+              "-",
+            },
+            stdin = true,
+          }
+        end,
+      },
+      json = {
+        function()
+          return {
+            exe = "jq",
+            args = {"--indent", "4", "."},
+            stdin = true,
+          }
+        end,
+      },
+    },
+  })
+
+  -- Auto-format on save
+  vim.api.nvim_create_augroup("FormatAutogroup", { clear = true })
+  vim.api.nvim_create_autocmd("BufWritePost", {
+    pattern = "*.py",
+    group = "FormatAutogroup",
+    callback = function()
+      vim.cmd("FormatWrite")
+    end,
   })
 end
-
--- Set up automatic formatting on save
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = "*.py",
-  callback = function()
-    if formatter_status_ok then
-      vim.cmd("FormatWrite")
-    end
-  end,
-})
