@@ -134,6 +134,7 @@ end, { "i", "c" }),
         luasnip = "[Snippet]",
         buffer = "[Buffer]",
         path = "[Path]",
+        cmdline = "[CMD]", 
       })[entry.source.name]
       return vim_item
     end,
@@ -156,3 +157,30 @@ end, { "i", "c" }),
     native_menu = false,
   },
 }
+
+-- Enhanced completion for shell files (CLI editing)
+cmp.setup.filetype('sh', {
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp', priority = 1000 },
+    { name = 'path', priority = 750 },
+    { name = 'buffer', keyword_length = 2, priority = 500 },
+    { name = 'luasnip', priority = 250 },
+  })
+})
+
+-- Command-line completion (optional, for : commands)
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' },
+    { name = 'cmdline' }
+  })
+})
+
+-- Search completion (optional, for / and ? searches)
+cmp.setup.cmdline({ '/', '?' }, {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' }
+  }
+})

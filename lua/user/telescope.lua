@@ -20,6 +20,8 @@ telescope.setup {
       "__pycache__",
       "%.mypy_cache/",    -- matches .mypy_cache/ directories
       "mypy_cache/",      -- matches mypy_cache/ directories
+      ".pytest_cache/",
+      ".hydra/",
       "%.pyc$",
       "%.git",
       "%.tff",

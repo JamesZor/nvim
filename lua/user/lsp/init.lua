@@ -6,6 +6,15 @@ end
 require("user.lsp.handlers").setup()
 require("user.lsp.mason")  -- This now includes formatter setup
 
+-- In user/lsp.lua
+require('lspconfig').bashls.setup{
+  filetypes = { "sh", "bash", "zsh" },
+  settings = {
+    bashIde = {
+      globPattern = "*@(.sh|.inc|.bash|.command|.zsh)"
+    }
+  }
+}
 -- Comment out the separate formatter
 -- local formatter_ok, _ = pcall(require, "user.formatter")
 -- if formatter_ok then
