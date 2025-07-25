@@ -38,10 +38,73 @@ M.setup = function()
 
   vim.diagnostic.config(config)
 
-  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-    border = "rounded",
-    width = 60,
-  })
+--  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+--    border = "rounded",
+--    width = 60,
+--  })
+  vim.lsp.handlers["textDocument/hover"] = function(_, result, ctx, config)
+    if not result or not result.contents then
+      return
+    end
+    
+    -- Check if we already have our custom split open
+    local existing_win = nil
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+      local buf = vim.api.nvim_win_get_buf(win)
+      if vim.api.nvim_buf_get_name(buf):match("LSP_HOVER") then
+        existing_win = win
+        break
+      end
+    end
+    
+    -- If no existing window, create a vertical split
+    if not existing_win then
+      vim.cmd('vsplit')
+      vim.cmd('wincmd l')  -- Move to the right window
+      
+      -- Create a named scratch buffer
+      local buf = vim.api.nvim_create_buf(false, true)
+      vim.api.nvim_buf_set_name(buf, "LSP_HOVER")
+      vim.api.nvim_win_set_buf(0, buf)
+      existing_win = vim.api.nvim_get_current_win()
+    else
+      -- Use existing window
+      vim.api.nvim_set_current_win(existing_win)
+    end
+    
+    -- Get the buffer and clear it
+    local buf = vim.api.nvim_win_get_buf(existing_win)
+    vim.api.nvim_buf_set_option(buf, 'modifiable', true)
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, {})
+    
+    -- Extract content from LSP response
+    local contents = result.contents
+    local lines = {}
+    
+    if type(contents) == "string" then
+      lines = vim.split(contents, '\n')
+    elseif contents.value then
+      lines = vim.split(contents.value, '\n')
+    elseif type(contents) == "table" and contents[1] then
+      if type(contents[1]) == "string" then
+        lines = contents
+      elseif contents[1].value then
+        lines = vim.split(contents[1].value, '\n')
+      end
+    end
+    
+    -- Set the content
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+    
+    -- Configure the buffer
+    vim.api.nvim_buf_set_option(buf, 'modifiable', false)
+    vim.api.nvim_buf_set_option(buf, 'filetype', 'markdown')
+    vim.api.nvim_win_set_option(existing_win, 'wrap', true)
+    vim.api.nvim_win_set_option(existing_win, 'number', false)
+    
+    -- Return focus to the original window
+    vim.cmd('wincmd p')
+  end
 
   vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
     border = "rounded",
@@ -77,7 +140,7 @@ local function lsp_keymaps(bufnr)
   -- Check if lspsaga is available
   local has_lspsaga = pcall(require, "lspsaga")
   
-  if has_lspsaga then
+  if false then
     -- If lspsaga is available, use its keymaps
     local lspsaga_setup = require("user.lspsaga")
     lspsaga_setup.set_keymaps(bufnr)
