@@ -44,7 +44,99 @@ local kind_icons = {
   TypeParameter = "󰉺",
 }
 -- find more here: https://www.nerdfonts.com/cheat-sheet
+--
+-- Kind filtering system
+local kind_filter_state = {
+  current_index = 1,
+  filters = {
+    { name = "All", kinds = nil },  -- nil means no filter
+    { name = "Variables", kinds = { cmp.lsp.CompletionItemKind.Variable, cmp.lsp.CompletionItemKind.Field, cmp.lsp.CompletionItemKind.Property } },
+    { name = "Functions", kinds = { cmp.lsp.CompletionItemKind.Function, cmp.lsp.CompletionItemKind.Method } },
+    { name = "Classes", kinds = { cmp.lsp.CompletionItemKind.Class, cmp.lsp.CompletionItemKind.Constructor } },
+--    { name = "Keywords", kinds = { cmp.lsp.CompletionItemKind.Keyword } },
+--    { name = "Snippets", kinds = { cmp.lsp.CompletionItemKind.Snippet } },
+--    { name = "Constants", kinds = { cmp.lsp.CompletionItemKind.Constant, cmp.lsp.CompletionItemKind.Enum, cmp.lsp.CompletionItemKind.EnumMember } },
+  }
+}
 
+-- Function to get current filter
+local function get_current_filter()
+  return kind_filter_state.filters[kind_filter_state.current_index]
+end
+
+-- Function to create entry filter
+local function create_entry_filter()
+  local current_filter = get_current_filter()
+  if not current_filter.kinds then
+    return nil  -- No filter, show all
+  end
+  
+  return function(entry, ctx)
+    local kind = entry:get_completion_item().kind
+    for _, allowed_kind in ipairs(current_filter.kinds) do
+      if kind == allowed_kind then
+        return true
+      end
+    end
+    return false
+  end
+end
+
+-- Function to cycle to next filter
+local function cycle_filter_forward()
+  kind_filter_state.current_index = kind_filter_state.current_index + 1
+  if kind_filter_state.current_index > #kind_filter_state.filters then
+    kind_filter_state.current_index = 1
+  end
+  
+  local current_filter = get_current_filter()
+  vim.notify("CMP Filter: " .. current_filter.name, vim.log.levels.INFO, { title = "Completion" })
+  
+  if cmp.visible() then
+    cmp.close()
+    cmp.complete({
+      config = {
+        sources = {
+          { 
+            name = 'nvim_lsp',
+            entry_filter = create_entry_filter()
+          },
+          { name = 'luasnip' },
+          { name = 'buffer' },
+          { name = 'path' },
+        }
+      }
+    })
+  end
+end
+
+-- Function to cycle to previous filter
+local function cycle_filter_backward()
+  kind_filter_state.current_index = kind_filter_state.current_index - 1
+  if kind_filter_state.current_index < 1 then
+    kind_filter_state.current_index = #kind_filter_state.filters
+  end
+  
+  local current_filter = get_current_filter()
+  vim.notify("CMP Filter: " .. current_filter.name, vim.log.levels.INFO, { title = "Completion" })
+  
+  if cmp.visible() then
+    cmp.close()
+    cmp.complete({
+      config = {
+        sources = {
+          { 
+            name = 'nvim_lsp',
+            entry_filter = create_entry_filter()
+          },
+          { name = 'luasnip' },
+          { name = 'buffer' },
+          { name = 'path' },
+        }
+      }
+    })
+  end
+end
 cmp.setup {
   snippet = {
     expand = function(args)
@@ -93,35 +185,14 @@ cmp.setup {
       "i",
       "s",
     }),
+  -- Updated mappings for kind filtering
+  ["<C-l>"] = cmp.mapping(function()
+    cycle_filter_forward()
+  end, { "i", "c" }),
 
-
-    -- To use control+{h,l} to shift through types
-    ["<C-l>"] = cmp.mapping(function()
-  if cmp.visible() then
-    cmp.close()
-    cmp.complete({
-      config = {
-        sources = {
-          { name = 'nvim_lsp' }
-        }
-      }
-    })
-  end
-end, { "i", "c" }),
-
-["<C-h>"] = cmp.mapping(function()
-  if cmp.visible() then
-    cmp.close()
-    cmp.complete({
-      config = {
-        sources = {
-          { name = 'luasnip' }
-        }
-      }
-    })
-  end
-end, { "i", "c" }),
-
+  ["<C-h>"] = cmp.mapping(function()
+    cycle_filter_backward()
+  end, { "i", "c" }),
   },
   formatting = {
     fields = { "kind", "abbr", "menu" },
@@ -145,11 +216,14 @@ end, { "i", "c" }),
     end,
   },
   sources = {
-    { name = "nvim_lsp" },
-    { name = "luasnip" },
-    { name = "buffer" },
-    { name = "path" },
+  { 
+    name = "nvim_lsp",
+    entry_filter = create_entry_filter()  -- Apply the current filter
   },
+  { name = "luasnip" },
+  { name = "buffer" },
+  { name = "path" },
+},
   confirm_opts = {
     behavior = cmp.ConfirmBehavior.Replace,
     select = false,
@@ -191,3 +265,8 @@ cmp.setup.cmdline({ '/', '?' }, {
     { name = 'buffer' }
   }
 })
+
+vim.api.nvim_create_user_command('CmpResetFilter', function()
+  kind_filter_state.current_index = 1
+  vim.notify("CMP Filter reset to: All", vim.log.levels.INFO, { title = "Completion" })
+end, {})
