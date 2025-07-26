@@ -126,6 +126,11 @@ end, { "i", "c" }),
   formatting = {
     fields = { "kind", "abbr", "menu" },
     format = function(entry, vim_item)
+    -- Truncate long completion items
+    local max_width = 50  -- Adjust this number to your preference
+    if string.len(vim_item.abbr) > max_width then
+      vim_item.abbr = string.sub(vim_item.abbr, 1, max_width - 1) .. "…"
+    end
       -- Kind icons
       vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
       -- vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind) -- This concatonates the icons with the name of the item kind
@@ -151,6 +156,8 @@ end, { "i", "c" }),
   },
   window = {
     documentation = cmp.config.window.bordered(),
+    max_width = 60,
+    max_height = 15,
   },
   experimental = {
     ghost_text = false,

@@ -31,23 +31,17 @@ local function setup_options()
     -- vim.g.molten_show_mimetype_debug = true
 
     -- Set all available kernels based on the jupyter kernelspec list output
-    vim.g.molten_jupyter_kernels = {
-        ["py3.11"] = {
-            kernel_path = "/home/james/.local/share/jupyter/kernels/py3.11/kernel.json"
-        },
-        ["julia-1.11"] = {
-            kernel_path = "/home/james/.local/share/jupyter/kernels/julia-1.11/kernel.json"
-        },
-        ["julia-8-threads"] = {
-            kernel_path = "/home/james/.local/share/jupyter/kernels/julia-_8-threads_-1.11/kernel.json"
-        },
-        ["webscraper"] = {
-            kernel_path = "/home/james/.local/share/jupyter/kernels/webscraper/kernel.json"
-        },
-        ["python3"] = {
-            kernel_path = "/home/james/miniconda3/share/jupyter/kernels/python3/kernel.json"
-        }
-    }
+--    vim.g.molten_jupyter_kernels = {
+--        ["py3.11"] = {
+--            kernel_path = "/home/james/.local/share/jupyter/kernels/py3.11/kernel.json"
+--        },
+--        ["webscraper"] = {
+--            kernel_path = "/home/james/.local/share/jupyter/kernels/webscraper/kernel.json"
+--        },
+--        ["python3"] = {
+--            kernel_path = "/home/james/miniconda3/share/jupyter/kernels/python3/kernel.json"
+--        }
+--    }
         -- Set Python host
     vim.g.python3_host_prog = vim.fn.expand('/home/james/miniconda3/envs/py3.11/bin/python')
 end
@@ -69,7 +63,7 @@ local function setup_keymaps()
 
     -- Remove the image popup mapping since we're disabling that functionality
     map("n", "<localleader>ip", ":MoltenImagePopup<CR>", { silent = true, desc = "Open image in popup" })
-
+    map("n", "<localleader>ob", ":MoltenOpenInBrowser<CR>", { silent = true, desc = "Open output in browser" })
     vim.api.nvim_create_autocmd("FileType", {
         pattern = "molten_output",
         callback = function()

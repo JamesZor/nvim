@@ -22,7 +22,7 @@ require('lspconfig').bashls.setup{
 -- end
 
 -- Keep lspsaga if you want
---local lspsaga_ok, _ = pcall(require, "user.lspsaga")
---if lspsaga_ok then
---  require("user.lspsaga").setup()
---end
+local lspsaga_ok, _ = pcall(require, "user.lspsaga")
+if lspsaga_ok then
+  require("user.lspsaga").setup()
+end

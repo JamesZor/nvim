@@ -9,7 +9,7 @@ M.setup = function()
   saga.setup({
     ui = {
       border = "rounded",
-      code_action = "💡",
+      code_action = " ",
     },
     symbol_in_winbar = {
       enable = true,
