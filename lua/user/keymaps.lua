@@ -112,6 +112,24 @@ keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
 --keymap("n", "<leader>f", "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = True }))<cr>", opts)
 keymap("n", "<c-t>", "<cmd>Telescope live_grep<cr>", opts)
 
+-- TODO Comments keymaps
+vim.keymap.set("n", "]t", function()
+  require("todo-comments").jump_next()
+end, { desc = "Next todo comment" })
+
+vim.keymap.set("n", "[t", function()
+  require("todo-comments").jump_prev()
+end, { desc = "Previous todo comment" })
+
+-- Search through todos with Telescope
+keymap("n", "<leader>ft", "<cmd>TodoTelescope<cr>", opts)
+keymap("n", "<leader>fT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>", opts)
+
+-- If you installed Trouble.nvim
+keymap("n", "<leader>xt", "<cmd>TodoTrouble<cr>", opts)
+keymap("n", "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>", opts)
+
+
 
 keymap("n", "<c-x>", "", {
   callback = function()

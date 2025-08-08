@@ -57,11 +57,18 @@ M.setup = function()
       detail = true,
       auto_refresh = true,
       auto_close = true,
+      custom_sort = function(a, b)
+        return a.range.start.line < b.range.start.line
+      end,
       keys = {
         jump = "o",
         expand_collapse = "u",
         quit = "q",
       },
+    },
+    server_filetype_map = {
+      typescript = "tsserver",
+      python = "pylsp",  -- Explicitly map Python to pylsp
     },
   })
 end
@@ -85,7 +92,7 @@ M.set_keymaps = function(bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "<cmd>Lspsaga goto_definition<CR>", opts)
   
   -- Especially useful for Python
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>ft", "<cmd>Lspsaga peek_type_definition<CR>", opts)
+  vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>gt", "<cmd>Lspsaga peek_type_definition<CR>", opts)
 end
 
 return M
