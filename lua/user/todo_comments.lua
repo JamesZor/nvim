@@ -56,6 +56,9 @@ todo_comments.setup {
       "--with-filename",
       "--line-number",
       "--column",
+      "--glob=!docs/",           -- Exclude docs directory
+      "--glob=!*.md",            -- Exclude all markdown files
+      "--glob=!{docs,notes}/**", -- Exclude multiple directories
     },
     pattern = [[\b(KEYWORDS):]],
   },
