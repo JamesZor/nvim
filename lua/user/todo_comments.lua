@@ -14,14 +14,14 @@ todo_comments.setup {
       alt = { "FIXME", "BUG", "FIXIT", "ISSUE" },
     },
     TODO = { icon = " ", color = "info" },
-    HACK = { icon = " ", color = "warning" },
+    HACK = { icon = " ", color = "hack" },
     WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
-    PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+    PERF = { icon = " ", color = "perf", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
     NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
-    TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
+    TEST = { icon = "⏲ ", color = "default", alt = { "TESTING", "PASSED", "FAILED" } },
     -- Add your custom keywords here
-    REVIEW = { icon = " ", color = "default" },
-    QUESTION = { icon = " ", color = "hint", alt = { "Q" } },
+    REVIEW = { icon = " ", color = "review" },
+    QUESTION = { icon = " ", color = "question", alt = { "Q" } },
   },
   gui_style = {
     fg = "NONE",
@@ -41,12 +41,17 @@ todo_comments.setup {
     exclude = {},
   },
   colors = {
-    error = { "DiagnosticError", "ErrorMsg", "#DC2626" },
-    warning = { "DiagnosticWarn", "WarningMsg", "#FBBF24" },
-    info = { "DiagnosticInfo", "#2563EB" },
-    hint = { "DiagnosticHint", "#10B981" },
-    default = { "Identifier", "#7C3AED" },
-    test = { "Identifier", "#FF00FF" }
+  error = { "DiagnosticError", "ErrorMsg", "#DC2626" },      -- Red
+  warning = { "DiagnosticWarn", "WarningMsg", "#FBBF24" },   -- Yellow
+  info = { "DiagnosticInfo", "#2563EB" },                    -- Blue
+  hint = { "DiagnosticHint", "#10B981" },                    -- Green
+  default = { "Identifier", "#7C3AED" },                     -- Purple
+  test = { "Identifier", "#FF00FF" },                        -- Magenta
+  -- Custom colors for distinct keywords
+  hack = { "Number", "#FB923C" },                            -- Orange
+  perf = { "Statement", "#8B5CF6" },                         -- Violet
+  review = { "Function", "#06B6D4" },                        -- Cyan
+  question = { "String", "#EC4899" },                        -- Pink
   },
   search = {
     command = "rg",
