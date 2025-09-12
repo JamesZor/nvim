@@ -47,7 +47,7 @@ return packer.startup(function(use)
   }
 
   -- LSP signature - shows function signatures as you type
-  use "ray-x/lsp_signature.nvim"
+  -- use "ray-x/lsp_signature.nvim"
 
   -- Alternative to nvim-lsp-inlayhints - Official neovim inlay hints
   use 'felpafel/inlay-hint.nvim'
