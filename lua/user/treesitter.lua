@@ -18,7 +18,7 @@ configs.setup {
       
       -- Create a safe list of languages that work reliably
       local safe_langs = {
-        "lua", "vim", "vimdoc", "python", "bash","sql", "dbml"
+        "markdown", "markdown_inline", "julia", "lua", "vim", "vimdoc", "python", "bash","sql", "dbml"
       }
       
       local is_safe = false
@@ -37,11 +37,11 @@ configs.setup {
   },
   
   indent = { 
-    enable = false, -- Disable indentation initially
+    enable = true, -- Disable indentation initially
   },
 
   rainbow = {
-    enable = false, -- Disable rainbow initially
+    enable = true, -- Disable rainbow initially
   }
 }
 
