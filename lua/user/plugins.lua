@@ -102,7 +102,18 @@ return packer.startup(function(use)
   -- sql thing 
   use 'nanotee/sqls.nvim'
 
-
+  -- Markdown Preview
+  use {
+    "OXY2DEV/markview.nvim",
+    requires = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+      "3rd/image.nvim",
+    },
+    config = function()
+      require("user.markview").setup()
+    end,
+  }
   -- TODO Comments plugin
   use {
     "folke/todo-comments.nvim",

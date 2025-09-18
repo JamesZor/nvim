@@ -13,7 +13,9 @@ require "user.molten"
 require "user.inlay_hints"
 require "user.dadbod".setup()
 require "user.iron"
-require "user.cli_edit" 
+require "user.cli_edit"
+require "user.markview"
+
 
 --require "user.treesitter_dbml".setup()
 --require "user.dbml".setup()
