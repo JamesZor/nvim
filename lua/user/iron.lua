@@ -19,13 +19,7 @@ iron.setup({
     },
     -- Use vertical split (40% of screen width)
     repl_open_cmd = require('iron.view').split.vertical.botright(0.4),
-    
-    -- Alternative options:
-    -- repl_open_cmd = require('iron.view').bottom(30),  -- Bottom split with 30 lines
-    -- repl_open_cmd = require('iron.view').split.vertical.topleft(0.4),  -- Left side
-    -- repl_open_cmd = require('iron.view').split.horizontal.top(15),  -- Top split
-    
-    -- Add these settings to improve send speed
+
     repl_close_command = "exit()",
     send = {
       mark = {
