@@ -212,7 +212,12 @@ return packer.startup(function(use)
   }
 
 
-
+  use {
+    "jghauser/kitty-runner.nvim",
+    config = function()
+      require("kitty-runner").setup()
+    end
+  }
 
 
    -- Automatically set up your configuration after cloning packer.nvim
