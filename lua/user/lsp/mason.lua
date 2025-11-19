@@ -32,7 +32,7 @@ local tools = {
   'ruff',
   'json-lsp',
   'sqls',
-  'julia-lsp',
+  -- 'julia-lsp',
   'efm',
 }
 
@@ -83,7 +83,7 @@ require("mason-lspconfig").setup({
 
       -- Finally, configure the server
       vim.lsp.config(server_name, opts)
-      vim.lsp.enable(server_name)
+      vim.lsp.enable({server_name})
     end,
 
     -- Custom setup for pylsp (merges with defaults)
@@ -144,51 +144,50 @@ require("mason-lspconfig").setup({
       }
       
       vim.lsp.config("pylsp", opts)
-      vim.lsp.enable("pylsp")
+      vim.lsp.enable({"pylsp"})
     end,
     
     -- Custom setup for ruff_lsp (merges with defaults)
-    -- Note: mason-lspconfig uses the lspconfig server name ('ruff_lsp') as the key
-    ["ruff_lsp"] = function()
-      local opts = {
-        on_attach = on_attach,
-        capabilities = vim.tbl_deep_extend("force", capabilities, {
-          general = { positionEncodings = { "utf-16" } }
-        }),
-        init_options = {
-          settings = {
-            lint = { run = "onSave" },
-            organizeImports = true,
-            fixAll = true,
+    -- Note: mason-lspconfig uses the lspconfig server name ('ruff_lsp') as the keymaps
+      ["ruff_lsp"] = function()
+        local opts = {
+          on_attach = on_attach,
+          capabilities = capabilities, -- <-- This line is the only change
+          general = { positionEncodings = { "utf-16"}},
+          init_options = {
+            settings = {
+              lint = { run = "onSave" },
+              organizeImports = true,
+              fixAll = true,
+            }
           }
         }
-      }
-      vim.lsp.config("ruff_lsp", opts)
-      vim.lsp.enable("ruff_lsp")
-    end,
-    
+        vim.lsp.config("ruff_lsp", opts)
+        vim.lsp.enable({ "ruff_lsp" })
+      end,
+
     -- Custom setup for julials (merges with defaults)
-    ["julials"] = function()
-       local opts = {
-        on_attach = on_attach,
-        capabilities = capabilities,
-        filetypes = {"julia"},
-        single_file_support = true,
-        root_dir = function(fname)
-          return util.find_git_ancestor(fname) or util.path.dirname(fname)
-        end,
-        settings = {
-          julia = {
-            symbolCacheDownload = true,
-            lint = { missingrefs = "all", iter = true, call = true, typePropagation = true },
-            format = { indent = 4 },
-            completionmode = "qualify",
-          }
-        }
-      }
-      vim.lsp.config("julials", opts)
-      vim.lsp.enable("julials")
-    end,
+    -- ["julials"] = function()
+    --    local opts = {
+    --     on_attach = on_attach,
+    --     capabilities = capabilities,
+    --     filetypes = {"julia"},
+    --     single_file_support = true,
+    --     root_dir = function(fname)
+    --       return util.find_git_ancestor(fname) or util.path.dirname(fname)
+    --     end,
+    --     settings = {
+    --       julia = {
+    --         symbolCacheDownload = true,
+    --         lint = { missingrefs = "all", iter = true, call = true, typePropagation = true },
+    --         format = { indent = 4 },
+    --         completionmode = "qualify",
+    --       }
+    --     }
+    --   }
+    --   vim.lsp.config("julials", opts)
+    --   vim.lsp.enable({"julials"})
+    -- end,
     
     -- Custom setup for efm (merges with defaults)
     ["efm"] = function()
@@ -215,7 +214,7 @@ require("mason-lspconfig").setup({
         }
       }
       vim.lsp.config("efm", opts)
-      vim.lsp.enable("efm")
+      vim.lsp.enable({"efm"})
     end,
 
     -- Add handlers for lua_ls, jsonls, sqls, and bashls
@@ -231,22 +230,22 @@ require("mason-lspconfig").setup({
           }
         }
       })
-      vim.lsp.enable("lua_ls")
+      vim.lsp.enable({"lua_ls"})
     end,
 
     ["jsonls"] = function()
       vim.lsp.config("jsonls", { on_attach = on_attach, capabilities = capabilities })
-      vim.lsp.enable("jsonls")
+      vim.lsp.enable({"jsonls"})
     end,
 
     ["sqls"] = function()
       vim.lsp.config("sqls", { on_attach = on_attach, capabilities = capabilities })
-      vim.lsp.enable("sqls")
+      vim.lsp.enable({"sqls"})
     end,
 
     ["bashls"] = function()
       vim.lsp.config("bashls", { on_attach = on_attach, capabilities = capabilities })
-      vim.lsp.enable("bashls")
+      vim.lsp.enable({"bashls"})
     end,
   },
 })
