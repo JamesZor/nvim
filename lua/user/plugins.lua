@@ -39,13 +39,13 @@ packer.init {
 
 -- Install your plugins here
 return packer.startup(function(use)
-  use {
-    "Vigemus/iron.nvim",
-    config = function()
-      require("user.iron")
-    end
-  }
-
+  -- use {
+  --   "Vigemus/iron.nvim",
+  --   config = function()
+  --     require("user.iron")
+  --   end
+  -- }
+  --
   -- LSP signature - shows function signatures as you type
   -- use "ray-x/lsp_signature.nvim"
 
@@ -212,16 +212,16 @@ return packer.startup(function(use)
       })
     end,
   }
-  use {
-    "benlubas/molten-nvim",
-    version = "^1.0.0",
-    run = ":UpdateRemotePlugins",
-    dependencies = { "3rd/image.nvim" },
-    config = function()
-      require("user.molten").setup() -- Note the added .setup()
-    end,
-  }
-
+  -- use {
+  --   "benlubas/molten-nvim",
+  --   version = "^1.0.0",
+  --   run = ":UpdateRemotePlugins",
+  --   dependencies = { "3rd/image.nvim" },
+  --   config = function()
+  --     require("user.molten").setup() -- Note the added .setup()
+  --   end,
+  -- }
+  --
 
   use {
     "jghauser/kitty-runner.nvim",
@@ -230,7 +230,40 @@ return packer.startup(function(use)
     end
   }
 
-
+  -- use({
+  --   'yetone/avante.nvim',
+  --   branch = 'main',
+  --   run = 'make', -- This builds the binary on Arch
+  --   requires = {
+  --     "stevearc/dressing.nvim",
+  --     "nvim-lua/plenary.nvim",
+  --     "MunifTanjim/nui.nvim",
+  --     "nvim-tree/nvim-web-devicons", -- Optional icons
+  --     "hrsh7th/nvim-cmp",            -- For autocompletion in AI sidebar
+  --   },
+  --   config = function()
+  --     require('avante').setup({
+  --       provider = "gemini",
+  --       providers = {
+  --         gemini = {
+  --             -- Change this from 2.0 to 2.5 or 3.1
+  --             model = "gemini-2.5-pro", 
+  --             temperature = 0,
+  --             max_tokens = 8192, -- 2026 models support much larger outputs
+  --           },
+  --       },
+  --       -- Behavior for the "Hybrid" workflow
+  --       behaviour = {
+  --         auto_suggestions = false, -- Keep this false so it doesn't annoy you while typing
+  --         auto_set_highlight_group = true,
+  --         auto_set_keymaps = true,
+  --         auto_apply_diff_after_generation = false, -- IMPORTANT: Let's you review first
+  --       },
+  --     })
+  --   end
+  -- })
+  --
+  --
    -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if PACKER_BOOTSTRAP then

@@ -9,10 +9,10 @@ require "user.treesitter"
 require "user.vimtex"
 require "user.toggleterm"
 require "user.comment"
-require "user.molten"
+-- require "user.molten"
 require "user.inlay_hints"
 require "user.dadbod".setup()
-require "user.iron"
+-- require "user.iron"
 require "user.cli_edit"
 require "user.markview"
 

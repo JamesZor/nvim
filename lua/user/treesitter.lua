@@ -2,7 +2,8 @@ local configs = require("nvim-treesitter.configs")
 require("nvim-treesitter.install").prefer_git = true
 
 configs.setup {
-  ensure_installed = {"julia" }, -- Start with no parsers to avoid errors
+  -- ensure_installed = {"julia" }, -- Start with no parsers to avoid errors
+  ensure_installed = { "julia", "markdown", "markdown_inline" },
   sync_install = false, 
   auto_install = false, -- Disable auto-install to prevent unexpected behavior
   
