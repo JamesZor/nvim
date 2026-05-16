@@ -168,26 +168,30 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "julia",
   callback = function()
     vim.keymap.set("n", "<leader>po", function()
-      -- Get system clipboard contents (wl-clipboard / unnamedplus)
+      -- Get system clipboard contents
       local text = vim.fn.getreg("+")
       if text == "" then 
         vim.notify("Clipboard is empty!", vim.log.levels.WARN)
         return 
       end
       
-      -- Remove trailing newlines
-      text = text:gsub("\n$", "")
+      -- 1. Strip ANSI escape codes (removes terminal colors)
+      text = text:gsub('\27%[[0-9;]*[a-zA-Z]', '')
       
-      -- Format as Julia block comment
+      -- 2. NEW: Trim ALL leading and trailing whitespace/newlines
+      -- This fixes the Kitty scrollback empty lines issue!
+      text = text:gsub("^%s*(.-)%s*$", "%1")
+      
+      -- 3. NEW: Use Neovim's built-in split (much more robust than gmatch)
       local lines = { "", "#=" }
-      -- Split by newlines and add to our table
-      for s in text:gmatch("([^\r\n]*)\r?\n?") do
-          if s ~= "" or text:match("\n") then
-             table.insert(lines, s)
-          end
+      local split_lines = vim.split(text, "\n", { plain = true })
+      
+      for _, line in ipairs(split_lines) do
+          -- Strip any lingering Windows carriage returns just in case
+          line = line:gsub("\r$", "")
+          table.insert(lines, line)
       end
       
-      -- CORRECTED: Insert the closing tags individually
       table.insert(lines, "=#")
       table.insert(lines, "")
       
@@ -197,7 +201,7 @@ vim.api.nvim_create_autocmd("FileType", {
       
       -- Move cursor to the bottom of the pasted block
       vim.api.nvim_win_set_cursor(0, {cursor_row + #lines - 1, 0})
-      vim.notify("Pasted REPL output!", vim.log.levels.INFO)
+      vim.notify("Pasted clean REPL output!", vim.log.levels.INFO)
       
     end, { buffer = true, desc = "Paste clipboard as Julia block comment" })
   end

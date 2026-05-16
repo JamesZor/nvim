@@ -133,13 +133,14 @@ return packer.startup(function(use)
   }
 
   -- Treesitter
-  use {
-      'nvim-treesitter/nvim-treesitter',
-      run = function()
-          local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
-          ts_update()
-      end,
-  }
+use {
+    'nvim-treesitter/nvim-treesitter',
+    branch = 'main', -- <-- CRITICAL: Add this line here!
+    run = function()
+        local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
+        ts_update()
+    end,
+}
 
   -- comment plug 
   use {
@@ -149,7 +150,7 @@ return packer.startup(function(use)
     end
 }
 
-  use "p00f/nvim-ts-rainbow"
+--   use "p00f/nvim-ts-rainbow"
 
   -- Latex 
   use 'lervag/vimtex'
@@ -212,6 +213,20 @@ return packer.startup(function(use)
       })
     end,
   }
+
+  use {
+    "zaucy/gemini.nvim",
+    requires = {
+      "zaucy/mcp.nvim"
+    },
+    config = function()
+      -- mcp.nvim needs to be set up first to handle the tools
+      require("mcp").setup({}) 
+      -- Then set up the gemini UI integration
+      require("gemini").setup({})
+    end
+  }
+
   -- use {
   --   "benlubas/molten-nvim",
   --   version = "^1.0.0",
